@@ -56,6 +56,15 @@ function GUIforInput_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 
 % Update handles structure
+handles.negativeFlag=0;
+handles.startFlag=0;
+
+%data loaded in dataERP
+load('Sub1dataERP6.mat');
+handles.dataERP=dataERP;
+%not erp6 data loaded in dataNotERP
+load('Sub1dataNotERP6.mat') ; 
+handles.dataNotERP=dataNotERP;
 guidata(hObject, handles);
 
 % UIWAIT makes GUIforInput wait for user response (see UIRESUME)
@@ -70,7 +79,17 @@ function varargout = GUIforInput_OutputFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Get default command line output from handles structure
+
+
+
 varargout{1} = handles.output;
+positiveIndex=1;
+negativeIndex=1;
+data=[];
+
+disp('Start while loop')
+
+
 
 
 % --- Executes on button press in StartBtn.
@@ -78,8 +97,36 @@ function StartBtn_Callback(hObject, eventdata, handles)
 % hObject    handle to StartBtn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-display('Goodbye');
+display('Start flag set...')
+handles.startFlag=1;
+guidata(hObject, handles);
+positiveIndex=1;
+negativeIndex=1;
+data=[];
 
+disp('Start while loop')
+while(1)
+    pause(0.01);
+    guidata(hObject);
+
+    while(handles.startFlag && ((positiveIndex-1) < size(handles.dataERP,1)))
+        positiveIndex
+        if(handles.negativeFlag)
+            data=handles.dataNotERP(negativeIndex:negativeIndex+512-1,:);
+            negativeIndex=negativeIndex+512;
+						handles.negativeFlag=0;
+                      disp('negative flag processed')
+        else
+            %pull 512x64 data points from dataERP
+            data=handles.dataERP(positiveIndex:positiveIndex+512-1,:);
+            positiveIndex=positiveIndex+512;
+        end
+        
+        
+        
+    end
+    
+end
 
 
 
@@ -88,7 +135,10 @@ function NegBtn_Callback(hObject, eventdata, handles)
 % hObject    handle to NegBtn (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-display('byebye');
+display('Negative flag set...');
+handles.negativeFlag=1;
+guidata(hObject, handles);
+
 
 
 % --- Executes on button press in PosBtn.
