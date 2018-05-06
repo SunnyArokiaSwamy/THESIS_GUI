@@ -110,15 +110,9 @@ data=[];
 
 disp('Start while loop')
 
-numCheckBoxes=length(get(handles.uipanel4.Children));
+num
 
-
-idx=[];
-for(ii=1:numCheckBoxes)
-    if(get(handles.uipanel4.Children(ii),'value'))
-       idx=[idx ii]; 
-    end
-end
+get(handles.pannel2.Children
 
 
 
